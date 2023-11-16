@@ -16,5 +16,12 @@ int somatorio(arvore raiz);
 arvore busca(int valor, arvore raiz);
 void dobrar(arvore raiz);
 arvore mesclar(arvore a, arvore b);
+void exibir_reverso(arvore raiz);
+int qtd_par(arvore raiz);
+int somatorio_par(arvore raiz);
+int pai(arvore raiz, int i);
+arvore podar(arvore raiz, int i);
+int altura(arvore raiz);
+arvore descendentes(int valor,arvore raiz);
 
 #endif

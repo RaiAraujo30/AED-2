@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/Raí/Documents/Programacao/C/CodigoemC/AED2",
-      "program": "c:/Users/Raí/Documents/Programacao/C/CodigoemC/AED2/build/Debug/outDebug",
+      "cwd": "c:/Users/Raí/Documents/Programacao/C/AED2",
+      "program": "c:/Users/Raí/Documents/Programacao/C/AED2/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

@@ -2,19 +2,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
-
-
-
-void in_order(arvore raiz){
-    if(raiz != NULL){
-        
-
-        in_order(raiz->esq);
-        printf("[%d]", raiz->valor);
-        in_order(raiz->dir);
+arvore inserir(int valor, arvore raiz){
+    if(raiz == NULL){
+        arvore novo = (arvore) malloc(sizeof(struct no));
+        novo ->dir = NULL;
+        novo-> esq = NULL;
+        novo->valor = valor;
+        return novo;
+    }else{
+        if(valor >= raiz->valor){
+            raiz->dir = inserir(valor, raiz->dir);
+        } else{
+            raiz->esq  = inserir(valor, raiz->esq);
+        }
+    return raiz;
     }
+    
 }
 
 void pre_order(arvore raiz){
@@ -26,6 +29,17 @@ void pre_order(arvore raiz){
     }
 }
 
+void in_order(arvore raiz){
+    if(raiz != NULL){
+        
+
+        in_order(raiz->esq);
+        printf("[%d]", raiz->valor);
+        in_order(raiz->dir);
+    }
+}
+
+
 void pos_order(arvore raiz){
     if(raiz != NULL){
         pre_order(raiz->esq);
@@ -34,29 +48,108 @@ void pos_order(arvore raiz){
     }
 }
 
-int somatorio(arvore raiz) {
+void exibir_reverso(arvore raiz){
+    if(raiz != NULL) {
+      
+    exibir_reverso(raiz->dir);
+    printf("[%d]", raiz->valor);
+    exibir_reverso(raiz->esq);
+    
+    
+}
+}
+int qtd_par(arvore raiz){
     if (raiz == NULL) {
-        return 0; // Se a árvore está vazia, o somatório é zero
+        return 0; 
+    }
+    int contador = 0;
+
+    if(raiz->valor % 2 == 0){
+       contador++; 
+    }  
+    contador += qtd_par(raiz->esq);
+    contador += qtd_par(raiz->dir);
+
+    return contador;
+}
+
+int pai(arvore raiz, int i){
+
+
+   if (raiz->valor == i ){
+            printf("-1");
+        }
+    if ((raiz->esq != NULL && raiz->esq->valor == i) || (raiz->dir != NULL && raiz->dir->valor == i)){
+            printf("[%d]", raiz->valor);
+            
+        }else {
+        
+        if (i < raiz->valor) {
+            pai(raiz->esq, i);
+        } else if (i > raiz->valor) {
+            pai(raiz->dir, i);
+        } else {
+            printf("-1\n");
+        }
     }
 
-    int soma = raiz->valor; // Inicialize a soma com o valor do nó atual
-    soma += somatorio(raiz->esq); // Adicione o somatório da subárvore esquerda
-    soma += somatorio(raiz->dir); // Adicione o somatório da subárvore direita
+}
+
+int somatorio(arvore raiz) {
+    if (raiz == NULL) {
+        return 0; 
+    }
+
+    int soma = raiz->valor; 
+    soma += somatorio(raiz->esq);
+    soma += somatorio(raiz->dir); 
 
     return soma;
 }
 
-arvore busca(int valor, arvore raiz){
-    if (raiz == NULL){
+int somatorio_par(arvore raiz){
+     if (raiz == NULL) {
+        return 0; 
+    }
+
+    int soma = 0;
+
+    if (raiz->valor % 2 == 0){
+        soma += raiz->valor;
+    }
+    soma += somatorio_par(raiz->esq);
+    soma += somatorio_par(raiz->dir);
+
+    return soma;
+
+    }
+
+arvore podar(arvore raiz, int i){
+    if (raiz == NULL) {
+        return 0; 
+    }
+    if (raiz->valor == i){
+        raiz->esq = NULL;
+        raiz->dir = NULL;
+    }
+    podar(raiz->esq, i);
+    podar(raiz->dir, i);
+
+    return raiz;
+}
+
+arvore busca(int valor, arvore raiz) {
+    if (raiz == NULL) {
         return NULL;
     }
-    if (raiz->valor == valor){
+
+    if (raiz->valor == valor) {
         return raiz;
-    } else{
-        if(valor >= raiz->valor){
-            return  busca(valor, raiz->dir);
-        } else{
-            return  busca(valor, raiz->esq);
+    } else {
+        if (valor >= raiz->valor) {
+            return busca(valor, raiz->dir);
+        } else {
+            return busca(valor, raiz->esq);
         }
     }
 }
@@ -88,21 +181,48 @@ arvore mesclar(arvore a, arvore b){
         }
     return b;
     }
-
-arvore inserir(int valor, arvore raiz){
-    if(raiz == NULL){
-        arvore novo = (arvore) malloc(sizeof(struct no));
-        novo ->dir = NULL;
-        novo-> esq = NULL;
-        novo->valor = valor;
-        return novo;
-    }else{
-        if(valor >= raiz->valor){
-            raiz->dir = inserir(valor, raiz->dir);
-        } else{
-            raiz->esq  = inserir(valor, raiz->esq);
-        }
-    return raiz;
+void filhos(arvore filha) {
+    if (filha != NULL) {
+        filhos(filha->esq);
+        printf("[%d]", filha->valor);
+        filhos(filha->dir);
     }
-    
 }
+arvore descendentes(int valor,arvore raiz){
+    
+    if (raiz->valor == valor ){
+        printf("Descendentes de [%d]: ", raiz->valor);
+        filhos(raiz);
+        printf("\n");
+    } else{
+        if(valor >= raiz->valor){
+            return  descendentes(valor, raiz->dir);
+        } else{
+            return  descendentes(valor, raiz->esq);
+        }
+    }
+}
+
+
+int altura(arvore raiz){
+    if (raiz == NULL) {
+        return 0; 
+    }
+    int contadoresq = 0;
+    if(raiz->valor % 1 == 0){
+        contadoresq++; 
+        } 
+    int contadordir = 0;
+    if(raiz->valor % 1 == 0){
+        contadordir++; 
+        } 
+    contadoresq += altura(raiz->esq);
+    contadordir += altura(raiz->dir);
+
+    if(contadordir > contadoresq){
+        return contadordir;
+    } else{
+        return contadoresq;
+    }
+}
+
